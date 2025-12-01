@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tay Lee Music Hub | Upload & Share Your Music</title>
+    <title>Tay Lee Music Hub | Upload & Play YOUR Music</title>
     <style>
         * {
             margin: 0;
@@ -285,6 +285,14 @@
             justify-content: center;
             font-size: 3rem;
             color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .music-cover img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
         
         .music-info h4 {
@@ -563,6 +571,24 @@
         .spinning {
             animation: spin 2s linear infinite;
         }
+        
+        /* File Preview */
+        .file-preview {
+            margin-top: 1rem;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 5px;
+        }
+        
+        .file-preview-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 5px;
+            padding: 5px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 3px;
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -625,10 +651,10 @@
     <!-- Hero Section -->
     <section id="home" class="hero">
         <div class="container">
-            <h2>Share Your Music With The World</h2>
-            <p>Upload, manage, and share your music collection. Built for musicians by Tay Lee.</p>
+            <h2>Upload & Play YOUR Music</h2>
+            <p>Upload your REAL music files and play them directly in your browser. No more sample tracks!</p>
             <button onclick="scrollToUpload()" class="cta-button">
-                <i class="fas fa-cloud-upload-alt"></i> Upload Your First Track
+                <i class="fas fa-cloud-upload-alt"></i> Upload Your Music
             </button>
         </div>
     </section>
@@ -636,30 +662,32 @@
     <!-- Upload Section -->
     <section id="upload" class="upload-section">
         <div class="container">
-            <h3><i class="fas fa-upload"></i> Upload Music</h3>
+            <h3><i class="fas fa-upload"></i> Upload YOUR Music</h3>
             
             <div class="upload-area" id="uploadArea">
                 <div class="upload-icon">
                     <i class="fas fa-music"></i>
                 </div>
-                <p>Drag & drop your music files here</p>
-                <p class="file-types">MP3, WAV, FLAC, M4A (Max 50MB)</p>
-                <input type="file" id="musicFile" class="file-input" accept=".mp3,.wav,.flac,.m4a" multiple>
+                <p>Drag & drop your REAL music files here</p>
+                <p class="file-types">MP3, WAV, FLAC, M4A (Max 50MB per file)</p>
+                <input type="file" id="musicFile" class="file-input" accept=".mp3,.wav,.flac,.m4a,.ogg,.aac" multiple>
                 <label for="musicFile" class="file-label">
-                    <i class="fas fa-folder-open"></i> Browse Files
+                    <i class="fas fa-folder-open"></i> Browse Your Music Files
                 </label>
-                <p id="selectedFiles">No files selected</p>
+                <div id="selectedFiles" class="file-preview">
+                    <!-- File preview will appear here -->
+                </div>
             </div>
 
             <form class="upload-form" id="uploadForm">
                 <div class="form-group">
-                    <label for="trackTitle"><i class="fas fa-heading"></i> Track Title</label>
-                    <input type="text" id="trackTitle" placeholder="Enter track title" required>
+                    <label for="trackTitle"><i class="fas fa-heading"></i> Track Title *</label>
+                    <input type="text" id="trackTitle" placeholder="Enter your track title" required>
                 </div>
                 
                 <div class="form-group">
-                    <label for="artistName"><i class="fas fa-user"></i> Artist Name</label>
-                    <input type="text" id="artistName" placeholder="Enter artist name" required>
+                    <label for="artistName"><i class="fas fa-user"></i> Your Artist Name *</label>
+                    <input type="text" id="artistName" placeholder="Enter your artist name" required>
                 </div>
                 
                 <div class="form-group">
@@ -670,31 +698,34 @@
                 <div class="form-group">
                     <label for="genre"><i class="fas fa-guitar"></i> Genre</label>
                     <select id="genre">
+                        <option value="hiphop">Hip Hop</option>
+                        <option value="rnb">R&B</option>
                         <option value="pop">Pop</option>
                         <option value="rock">Rock</option>
-                        <option value="hiphop">Hip Hop</option>
-                        <option value="jazz">Jazz</option>
                         <option value="electronic">Electronic</option>
-                        <option value="classical">Classical</option>
-                        <option value="rnb">R&B</option>
-                        <option value="country">Country</option>
+                        <option value="jazz">Jazz</option>
+                        <option value="reggae">Reggae</option>
+                        <option value="afrobeat">Afrobeat</option>
                         <option value="other">Other</option>
                     </select>
                 </div>
                 
                 <div class="form-group">
-                    <label for="description"><i class="fas fa-align-left"></i> Description</label>
+                    <label for="description"><i class="fas fa-align-left"></i> Description (Optional)</label>
                     <textarea id="description" placeholder="Tell us about this track..."></textarea>
                 </div>
                 
                 <div class="loading" id="uploadLoading">
                     <div class="spinner"></div>
-                    <p>Uploading your music...</p>
+                    <p>Processing your music file...</p>
                 </div>
                 
                 <button type="submit" class="cta-button">
-                    <i class="fas fa-cloud-upload-alt"></i> Upload Track
+                    <i class="fas fa-cloud-upload-alt"></i> Upload & Save Track
                 </button>
+                <p style="text-align: center; color: #ccc; font-size: 0.9rem; margin-top: 10px;">
+                    <i class="fas fa-info-circle"></i> Your music is stored in your browser (local storage)
+                </p>
             </form>
         </div>
     </section>
@@ -703,9 +734,9 @@
     <section id="library" class="library-section">
         <div class="container">
             <div class="library-header">
-                <h3><i class="fas fa-music"></i> Music Library</h3>
+                <h3><i class="fas fa-music"></i> YOUR Music Library</h3>
                 <div class="search-box">
-                    <input type="text" id="searchInput" placeholder="Search tracks...">
+                    <input type="text" id="searchInput" placeholder="Search your tracks...">
                     <button class="cta-button" onclick="searchTracks()">
                         <i class="fas fa-search"></i> Search
                     </button>
@@ -714,11 +745,17 @@
             
             <div class="loading" id="libraryLoading">
                 <div class="spinner"></div>
-                <p>Loading music library...</p>
+                <p>Loading your music library...</p>
+            </div>
+            
+            <div id="noMusicMessage" style="display: none; text-align: center; padding: 3rem; color: #ccc;">
+                <i class="fas fa-music" style="font-size: 3rem; margin-bottom: 1rem; display: block;"></i>
+                <h3>No music yet</h3>
+                <p>Upload your first track using the form above!</p>
             </div>
             
             <div class="music-grid" id="musicGrid">
-                <!-- Music cards will be dynamically added here -->
+                <!-- Your uploaded music will appear here -->
             </div>
         </div>
     </section>
@@ -731,7 +768,7 @@
                     <i class="fas fa-music"></i>
                 </div>
                 <div class="stat-number" id="totalTracks">0</div>
-                <p>Total Tracks</p>
+                <p>Your Tracks</p>
             </div>
             
             <div class="stat-card">
@@ -764,16 +801,16 @@
     <section id="about" style="padding: 3rem 0;">
         <div class="container">
             <div class="upload-section">
-                <h3><i class="fas fa-info-circle"></i> About Tay Lee Music Hub</h3>
-                <p style="margin-bottom: 1rem;">Welcome to your personal music upload platform! This website allows you to:</p>
+                <h3><i class="fas fa-info-circle"></i> How It Works</h3>
+                <p style="margin-bottom: 1rem;">This platform stores your music files in YOUR browser's local storage. This means:</p>
                 <ul style="margin-left: 2rem; margin-bottom: 2rem; color: #ccc;">
-                    <li>Upload and store your music files</li>
-                    <li>Organize your music library</li>
-                    <li>Play tracks directly in the browser</li>
-                    <li>Track your upload statistics</li>
-                    <li>Share your music with others</li>
+                    <li>✅ Your music stays on YOUR device</li>
+                    <li>✅ No server storage needed</li>
+                    <li>✅ Play your music instantly</li>
+                    <li>✅ Works completely offline</li>
+                    <li>✅ Private and secure</li>
                 </ul>
-                <p>Built with ❤️ by Tay Lee for musicians and music lovers.</p>
+                <p><strong>Note:</strong> If you clear browser cache, your uploaded music will be removed. For permanent storage, consider upgrading to server storage.</p>
             </div>
         </div>
     </section>
@@ -784,34 +821,34 @@
             <div class="footer-content">
                 <div class="footer-section">
                     <h4>Tay Lee Music Hub</h4>
-                    <p>Your personal music upload platform. Share your sound with the world.</p>
+                    <p>Your personal music upload platform. Upload and play YOUR music!</p>
                 </div>
                 
                 <div class="footer-section">
                     <h4>Quick Links</h4>
                     <a href="#home">Home</a>
                     <a href="#upload">Upload Music</a>
-                    <a href="#library">Music Library</a>
+                    <a href="#library">Your Library</a>
                     <a href="#stats">Statistics</a>
                 </div>
                 
                 <div class="footer-section">
                     <h4>Contact</h4>
-                    <p>Email: contact@tayleemusic.com</p>
+                    <p>Email: taylee@music.com</p>
                     <p>Support: support@tayleemusic.com</p>
                 </div>
                 
                 <div class="footer-section">
-                    <h4>Legal</h4>
-                    <a href="#">Terms of Service</a>
-                    <a href="#">Privacy Policy</a>
-                    <a href="#">Copyright Info</a>
+                    <h4>Backup Your Music</h4>
+                    <a href="#" onclick="backupMusic()">Download Backup</a>
+                    <a href="#" onclick="restoreMusic()">Restore Backup</a>
+                    <a href="#" onclick="clearAllMusic()">Clear All Music</a>
                 </div>
             </div>
             
             <div class="copyright">
                 <p>&copy; 2024 Tay Lee Music Hub. All rights reserved.</p>
-                <p>This is a demo music upload platform.</p>
+                <p>Your music is stored locally in your browser.</p>
             </div>
         </div>
     </footer>
@@ -823,108 +860,56 @@
                 <h3><i class="fas fa-check-circle" style="color: #4CAF50;"></i> Upload Successful!</h3>
                 <button class="close-modal" onclick="closeModal()">&times;</button>
             </div>
-            <p>Your music has been successfully uploaded to Tay Lee Music Hub.</p>
+            <p>Your music has been successfully uploaded and saved!</p>
             <p id="uploadDetails"></p>
             <button class="cta-button" onclick="closeModal()" style="margin-top: 1rem;">
-                Continue
+                Play Now
             </button>
         </div>
     </div>
 
+    <!-- Backup Modal -->
+    <div class="modal" id="backupModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-download" style="color: #00dbde;"></i> Backup Your Music</h3>
+                <button class="close-modal" onclick="closeBackupModal()">&times;</button>
+            </div>
+            <p>Download a backup file of all your music data:</p>
+            <button class="cta-button" onclick="downloadBackup()" style="margin: 1rem 0;">
+                <i class="fas fa-file-download"></i> Download Backup File
+            </button>
+            <p style="color: #ccc; font-size: 0.9rem;">
+                Save this file to restore your music library later.
+            </p>
+        </div>
+    </div>
+
+    <!-- Restore Modal -->
+    <div class="modal" id="restoreModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-upload" style="color: #00dbde;"></i> Restore Music Backup</h3>
+                <button class="close-modal" onclick="closeRestoreModal()">&times;</button>
+            </div>
+            <p>Select your backup file to restore your music:</p>
+            <input type="file" id="backupFile" accept=".json" style="margin: 1rem 0; padding: 10px; width: 100%;">
+            <button class="cta-button" onclick="restoreFromBackup()">
+                <i class="fas fa-file-upload"></i> Restore Backup
+            </button>
+            <p style="color: #ff6b6b; font-size: 0.9rem; margin-top: 1rem;">
+                Warning: This will replace your current music library!
+            </p>
+        </div>
+    </div>
+
     <script>
-        // REAL MUSIC PLAYER SYSTEM
+        // REAL MUSIC PLAYER SYSTEM WITH LOCAL STORAGE
         const audioPlayer = new Audio();
         let currentTrackIndex = -1;
         let isPlaying = false;
         let tracks = [];
         let progressInterval;
-        
-        // Sample tracks with REAL music URLs (copyright-free music)
-        const sampleTracks = [
-            {
-                id: 1,
-                title: "Midnight Dreams",
-                artist: "Tay Lee",
-                album: "Night Vibes",
-                genre: "Electronic",
-                description: "Chill electronic track perfect for late nights",
-                duration: "3:45",
-                size: "8.2 MB",
-                plays: 42,
-                uploadDate: "2024-01-15",
-                audioUrl: "https://assets.mixkit.co/music/preview/mixkit-tech-house-vibes-130.mp3"
-            },
-            {
-                id: 2,
-                title: "Summer Breeze",
-                artist: "Tay Lee",
-                album: "Seasonal Mix",
-                genre: "Pop",
-                description: "Upbeat pop track for summer days",
-                duration: "4:12",
-                size: "9.5 MB",
-                plays: 67,
-                uploadDate: "2024-02-10",
-                audioUrl: "https://assets.mixkit.co/music/preview/mixkit-driving-ambition-32.mp3"
-            },
-            {
-                id: 3,
-                title: "Urban Echoes",
-                artist: "City Beats",
-                album: "City Sounds",
-                genre: "Hip Hop",
-                description: "Urban hip hop with smooth beats",
-                duration: "3:28",
-                size: "7.8 MB",
-                plays: 31,
-                uploadDate: "2024-03-05",
-                audioUrl: "https://assets.mixkit.co/music/preview/mixkit-deep-urban-623.mp3"
-            },
-            {
-                id: 4,
-                title: "Ocean Waves",
-                artist: "Tay Lee",
-                album: "Nature Sounds",
-                genre: "Ambient",
-                description: "Relaxing ambient ocean sounds",
-                duration: "5:20",
-                size: "10.1 MB",
-                plays: 89,
-                uploadDate: "2024-03-20",
-                audioUrl: "https://assets.mixkit.co/music/preview/mixkit-soothing-wind-567.mp3"
-            },
-            {
-                id: 5,
-                title: "Neon Lights",
-                artist: "Synth Wave",
-                album: "Cyber Dreams",
-                genre: "Synthwave",
-                description: "80s inspired synthwave track",
-                duration: "4:05",
-                size: "8.9 MB",
-                plays: 54,
-                uploadDate: "2024-04-01",
-                audioUrl: "https://assets.mixkit.co/music/preview/mixkit-synthwave-01-464.mp3"
-            },
-            {
-                id: 6,
-                title: "Mountain High",
-                artist: "Tay Lee",
-                album: "Adventure Mix",
-                genre: "Rock",
-                description: "Epic rock instrumental",
-                duration: "3:55",
-                size: "9.2 MB",
-                plays: 38,
-                uploadDate: "2024-04-15",
-                audioUrl: "https://assets.mixkit.co/music/preview/mixkit-epic-trailer-687.mp3"
-            }
-        ];
-        
-        // Music data storage
-        let musicLibrary = [];
-        let totalStorage = 0;
-        let totalPlays = 0;
         
         // DOM Elements
         const uploadArea = document.getElementById('uploadArea');
@@ -935,6 +920,7 @@
         const searchInput = document.getElementById('searchInput');
         const libraryLoading = document.getElementById('libraryLoading');
         const uploadLoading = document.getElementById('uploadLoading');
+        const noMusicMessage = document.getElementById('noMusicMessage');
         
         // Player elements
         const globalPlayer = document.getElementById('globalPlayer');
@@ -953,15 +939,8 @@
         
         // Initialize the app
         function initApp() {
-            // Load sample data
-            musicLibrary = [...sampleTracks];
-            tracks = [...sampleTracks];
-            
-            // Calculate initial stats
-            updateStatistics();
-            
-            // Render music library
-            renderMusicLibrary();
+            // Load music from local storage
+            loadMusicFromStorage();
             
             // Set up event listeners
             setupEventListeners();
@@ -969,10 +948,42 @@
             // Setup audio player events
             setupAudioPlayer();
             
-            // Simulate library loading
+            // Hide loading
             setTimeout(() => {
                 libraryLoading.style.display = 'none';
-            }, 1000);
+                updateNoMusicMessage();
+            }, 500);
+        }
+        
+        // Load music from local storage
+        function loadMusicFromStorage() {
+            const savedMusic = localStorage.getItem('tayLeeMusicLibrary');
+            if (savedMusic) {
+                try {
+                    tracks = JSON.parse(savedMusic);
+                    updateStatistics();
+                    renderMusicLibrary();
+                } catch (e) {
+                    console.error("Error loading music:", e);
+                    tracks = [];
+                }
+            } else {
+                tracks = [];
+            }
+        }
+        
+        // Save music to local storage
+        function saveMusicToStorage() {
+            try {
+                localStorage.setItem('tayLeeMusicLibrary', JSON.stringify(tracks));
+                console.log("Music saved to storage:", tracks.length, "tracks");
+            } catch (e) {
+                console.error("Error saving music:", e);
+                // If storage is full, show warning
+                if (e.name === 'QuotaExceededError') {
+                    alert("Storage is full! Please delete some tracks or clear browser cache.");
+                }
+            }
         }
         
         // Set up audio player events
@@ -984,43 +995,158 @@
             audioPlayer.addEventListener('ended', nextTrack);
             audioPlayer.addEventListener('error', function(e) {
                 console.log("Audio error:", e);
-                // Try fallback URL
-                if (currentTrackIndex >= 0 && tracks[currentTrackIndex]) {
-                    loadFallbackAudio();
-                }
+                alert("Error playing audio. Please check the file format.");
             });
             
             // Set initial volume
             audioPlayer.volume = 0.8;
         }
         
-        // Load fallback audio
-        function loadFallbackAudio() {
-            const fallbackUrls = [
-                "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
-                "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
-                "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3"
-            ];
-            const randomUrl = fallbackUrls[Math.floor(Math.random() * fallbackUrls.length)];
-            audioPlayer.src = randomUrl;
-            audioPlayer.play().catch(e => console.log("Fallback also failed:", e));
+        // Handle file selection
+        let selectedFile = null;
+        
+        function handleFiles(files) {
+            selectedFiles.innerHTML = '';
+            
+            if (files.length > 0) {
+                selectedFile = files[0]; // Store the first file
+                
+                const fileItem = document.createElement('div');
+                fileItem.className = 'file-preview-item';
+                fileItem.innerHTML = `
+                    <i class="fas fa-music" style="color: #00dbde;"></i>
+                    <div style="flex: 1;">
+                        <strong>${selectedFile.name}</strong>
+                        <div style="font-size: 0.8em; color: #ccc;">
+                            ${formatFileSize(selectedFile.size)} • ${selectedFile.type}
+                        </div>
+                    </div>
+                    <i class="fas fa-check-circle" style="color: #4CAF50;"></i>
+                `;
+                selectedFiles.appendChild(fileItem);
+                
+                // Auto-fill track title from filename
+                const trackTitle = document.getElementById('trackTitle');
+                if (!trackTitle.value) {
+                    const fileName = selectedFile.name.replace(/\.[^/.]+$/, ""); // Remove extension
+                    trackTitle.value = fileName;
+                }
+            } else {
+                selectedFiles.innerHTML = '<p style="color: #ccc; text-align: center;">No file selected</p>';
+                selectedFile = null;
+            }
+        }
+        
+        // Format file size
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+        
+        // Handle music upload
+        async function handleUpload(e) {
+            e.preventDefault();
+            
+            if (!selectedFile) {
+                alert('Please select a music file to upload.');
+                return;
+            }
+            
+            // Validate file size (max 50MB)
+            if (selectedFile.size > 50 * 1024 * 1024) {
+                alert('File too large! Maximum size is 50MB.');
+                return;
+            }
+            
+            // Validate file type
+            const validTypes = ['audio/mpeg', 'audio/wav', 'audio/flac', 'audio/mp4', 'audio/ogg', 'audio/aac'];
+            if (!validTypes.includes(selectedFile.type.toLowerCase())) {
+                alert('Invalid file type! Please upload MP3, WAV, FLAC, M4A, OGG, or AAC files.');
+                return;
+            }
+            
+            const title = document.getElementById('trackTitle').value;
+            const artist = document.getElementById('artistName').value;
+            const album = document.getElementById('album').value;
+            const genre = document.getElementById('genre').value;
+            const description = document.getElementById('description').value;
+            
+            if (!title || !artist) {
+                alert('Please fill in track title and artist name.');
+                return;
+            }
+            
+            // Show loading
+            uploadLoading.style.display = 'block';
+            
+            // Convert file to base64 for storage
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                // Create new track object with REAL file data
+                const newTrack = {
+                    id: Date.now(), // Unique ID
+                    title: title,
+                    artist: artist,
+                    album: album || 'Single',
+                    genre: genre,
+                    description: description,
+                    duration: '--:--', // Will be updated when played
+                    size: formatFileSize(selectedFile.size),
+                    plays: 0,
+                    uploadDate: new Date().toISOString().split('T')[0],
+                    fileType: selectedFile.type,
+                    fileName: selectedFile.name,
+                    audioData: e.target.result, // Base64 encoded audio
+                    fileSize: selectedFile.size
+                };
+                
+                // Add to tracks array
+                tracks.unshift(newTrack);
+                
+                // Save to storage
+                saveMusicToStorage();
+                
+                // Update UI
+                renderMusicLibrary();
+                updateStatistics();
+                updateNoMusicMessage();
+                
+                // Reset form
+                uploadForm.reset();
+                selectedFiles.innerHTML = '<p style="color: #ccc; text-align: center;">No file selected</p>';
+                selectedFile = null;
+                
+                // Hide loading
+                uploadLoading.style.display = 'none';
+                
+                // Show success modal
+                showSuccessModal(newTrack);
+            };
+            
+            reader.onerror = function() {
+                alert('Error reading file. Please try again.');
+                uploadLoading.style.display = 'none';
+            };
+            
+            // Read file as base64
+            reader.readAsDataURL(selectedFile);
         }
         
         // Play a specific track
         function playTrack(trackId) {
-            console.log("Playing track:", trackId);
             const trackIndex = tracks.findIndex(t => t.id === trackId);
-            if (trackIndex === -1) {
-                console.log("Track not found:", trackId);
-                return;
-            }
+            if (trackIndex === -1) return;
             
             const track = tracks[trackIndex];
-            console.log("Found track:", track.title);
             
             // Update play count
             track.plays++;
             updateStatistics();
+            saveMusicToStorage();
             
             // If same track is already playing, toggle pause
             if (currentTrackIndex === trackIndex && isPlaying) {
@@ -1031,11 +1157,10 @@
             // Set current track
             currentTrackIndex = trackIndex;
             
-            // Load and play the track
-            audioPlayer.src = track.audioUrl;
+            // Load and play the track from base64 data
+            audioPlayer.src = track.audioData;
             audioPlayer.play()
                 .then(() => {
-                    console.log("Playback started successfully");
                     isPlaying = true;
                     updatePlayerUI();
                     showPlayer();
@@ -1048,10 +1173,19 @@
                     
                     // Update the CD spinning animation
                     updateCDAnimation();
+                    
+                    // Update duration when metadata loads
+                    audioPlayer.addEventListener('loadedmetadata', function() {
+                        if (!track.duration || track.duration === '--:--') {
+                            track.duration = formatTime(audioPlayer.duration);
+                            saveMusicToStorage();
+                            renderMusicLibrary();
+                        }
+                    }, { once: true });
                 })
                 .catch(error => {
                     console.log("Playback error:", error);
-                    loadFallbackAudio();
+                    alert("Error playing track. The file format might not be supported.");
                 });
         }
         
@@ -1090,7 +1224,7 @@
             
             // Add spinning to current track if playing
             if (currentTrackIndex >= 0 && isPlaying) {
-                const currentCard = document.querySelector(`.music-card:nth-child(${currentTrackIndex + 1}) .music-cover i`);
+                const currentCard = document.querySelector(`.music-card[data-track-id="${tracks[currentTrackIndex].id}"] .music-cover i`);
                 if (currentCard) {
                     currentCard.classList.add('spinning');
                 }
@@ -1114,6 +1248,7 @@
         
         // Format time (seconds to MM:SS)
         function formatTime(seconds) {
+            if (isNaN(seconds)) return '--:--';
             const mins = Math.floor(seconds / 60);
             const secs = Math.floor(seconds % 60);
             return `${mins}:${secs.toString().padStart(2, '0')}`;
@@ -1171,9 +1306,10 @@
         
         // Update play buttons in cards
         function updatePlayButtons() {
-            document.querySelectorAll('.play-btn').forEach((btn, index) => {
+            document.querySelectorAll('.play-btn').forEach((btn) => {
+                const trackId = parseInt(btn.closest('.music-card').dataset.trackId);
                 const icon = btn.querySelector('i');
-                if (index === currentTrackIndex && isPlaying) {
+                if (currentTrackIndex >= 0 && tracks[currentTrackIndex].id === trackId && isPlaying) {
                     icon.className = 'fas fa-pause';
                 } else {
                     icon.className = 'fas fa-play';
@@ -1197,6 +1333,7 @@
                 e.preventDefault();
                 uploadArea.classList.remove('drag-over');
                 handleFiles(e.dataTransfer.files);
+                musicFileInput.files = e.dataTransfer.files;
             });
             
             // File input change
@@ -1215,91 +1352,12 @@
             });
         }
         
-        // Handle selected files
-        function handleFiles(files) {
-            if (files.length > 0) {
-                const fileNames = Array.from(files).map(file => file.name).join(', ');
-                selectedFiles.textContent = `Selected: ${files.length} file(s) - ${fileNames}`;
-                selectedFiles.style.color = '#00dbde';
-            } else {
-                selectedFiles.textContent = 'No files selected';
-                selectedFiles.style.color = '#ccc';
-            }
-        }
-        
-        // Handle music upload
-        function handleUpload(e) {
-            e.preventDefault();
-            
-            const title = document.getElementById('trackTitle').value;
-            const artist = document.getElementById('artistName').value;
-            const album = document.getElementById('album').value;
-            const genre = document.getElementById('genre').value;
-            const description = document.getElementById('description').value;
-            const files = musicFileInput.files;
-            
-            if (files.length === 0) {
-                alert('Please select at least one music file to upload.');
-                return;
-            }
-            
-            // Show loading
-            uploadLoading.style.display = 'block';
-            
-            // Simulate upload process
-            setTimeout(() => {
-                // Create new music object with demo audio URL
-                const demoUrls = [
-                    "https://assets.mixkit.co/music/preview/mixkit-tech-house-vibes-130.mp3",
-                    "https://assets.mixkit.co/music/preview/mixkit-driving-ambition-32.mp3",
-                    "https://assets.mixkit.co/music/preview/mixkit-deep-urban-623.mp3",
-                    "https://assets.mixkit.co/music/preview/mixkit-soothing-wind-567.mp3"
-                ];
-                const randomUrl = demoUrls[Math.floor(Math.random() * demoUrls.length)];
-                
-                const newTrack = {
-                    id: musicLibrary.length + 1,
-                    title: title,
-                    artist: artist,
-                    album: album || 'Single',
-                    genre: genre,
-                    description: description,
-                    duration: Math.floor(Math.random() * 4 + 2) + ':' + 
-                              (Math.floor(Math.random() * 60)).toString().padStart(2, '0'),
-                    size: (Math.random() * 10 + 5).toFixed(1) + ' MB',
-                    plays: 0,
-                    uploadDate: new Date().toISOString().split('T')[0],
-                    audioUrl: randomUrl
-                };
-                
-                // Add to library
-                musicLibrary.unshift(newTrack);
-                tracks.unshift(newTrack);
-                
-                // Update UI
-                renderMusicLibrary();
-                updateStatistics();
-                
-                // Reset form
-                uploadForm.reset();
-                selectedFiles.textContent = 'No files selected';
-                selectedFiles.style.color = '#ccc';
-                
-                // Hide loading
-                uploadLoading.style.display = 'none';
-                
-                // Show success modal
-                showSuccessModal(newTrack);
-                
-            }, 2000);
-        }
-        
         // Show success modal
         function showSuccessModal(track) {
             const modal = document.getElementById('successModal');
             const details = document.getElementById('uploadDetails');
             
-            details.textContent = `${track.title} by ${track.artist} has been added to your library.`;
+            details.textContent = `"${track.title}" by ${track.artist} has been added to your library.`;
             modal.style.display = 'flex';
         }
         
@@ -1309,26 +1367,21 @@
         }
         
         // Render music library
-        function renderMusicLibrary(filteredMusic = musicLibrary) {
+        function renderMusicLibrary(filteredTracks = tracks) {
             musicGrid.innerHTML = '';
             
-            if (filteredMusic.length === 0) {
-                musicGrid.innerHTML = `
-                    <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: #ccc;">
-                        <i class="fas fa-music" style="font-size: 3rem; margin-bottom: 1rem; display: block;"></i>
-                        <h3>No music found</h3>
-                        <p>Try uploading some music or adjust your search.</p>
-                    </div>
-                `;
+            if (filteredTracks.length === 0) {
+                updateNoMusicMessage();
                 return;
             }
             
-            filteredMusic.forEach((track, index) => {
-                const isCurrent = index === currentTrackIndex;
+            filteredTracks.forEach((track) => {
+                const isCurrent = currentTrackIndex >= 0 && tracks[currentTrackIndex].id === track.id;
                 const isPlayingCurrent = isCurrent && isPlaying;
                 
                 const card = document.createElement('div');
                 card.className = 'music-card';
+                card.dataset.trackId = track.id;
                 card.innerHTML = `
                     <div class="music-cover">
                         <i class="fas fa-compact-disc ${isPlayingCurrent ? 'spinning' : ''}"></i>
@@ -1340,17 +1393,20 @@
                         <p><i class="fas fa-guitar"></i> ${track.genre}</p>
                         <p><i class="fas fa-clock"></i> ${track.duration} • ${track.size}</p>
                         <p><i class="fas fa-play-circle"></i> ${track.plays} plays</p>
-                        <p>${track.description}</p>
+                        <p>${track.description || 'No description'}</p>
+                        <p style="font-size: 0.8em; color: #888;">
+                            <i class="fas fa-calendar"></i> Uploaded: ${track.uploadDate}
+                        </p>
                     </div>
                     <div class="music-player">
-                        <button class="play-btn" data-track-id="${track.id}">
+                        <button class="play-btn">
                             <i class="fas ${isPlayingCurrent ? 'fa-pause' : 'fa-play'}"></i>
                         </button>
                         <div style="flex: 1;">
                             <div style="height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; margin-top: 5px;"></div>
                         </div>
-                        <button class="file-label share-btn" style="padding: 5px 10px;">
-                            <i class="fas fa-share"></i>
+                        <button class="file-label delete-btn" style="padding: 5px 10px; background: #ff4757;">
+                            <i class="fas fa-trash"></i>
                         </button>
                     </div>
                 `;
@@ -1359,32 +1415,51 @@
                 const playBtn = card.querySelector('.play-btn');
                 playBtn.addEventListener('click', () => playTrack(track.id));
                 
-                // Add click event to share button
-                const shareBtn = card.querySelector('.share-btn');
-                shareBtn.addEventListener('click', () => shareTrack(track.id));
+                // Add click event to delete button
+                const deleteBtn = card.querySelector('.delete-btn');
+                deleteBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    if (confirm(`Delete "${track.title}" by ${track.artist}?`)) {
+                        deleteTrack(track.id);
+                    }
+                });
                 
                 musicGrid.appendChild(card);
             });
+            
+            noMusicMessage.style.display = 'none';
         }
         
-        // Share track
-        function shareTrack(trackId) {
-            const track = musicLibrary.find(t => t.id === trackId);
-            if (track) {
-                const url = window.location.href;
-                const text = `Check out "${track.title}" by ${track.artist} on Tay Lee Music Hub!`;
-                
-                if (navigator.share) {
-                    navigator.share({
-                        title: track.title,
-                        text: text,
-                        url: url
-                    });
-                } else {
-                    navigator.clipboard.writeText(`${text}\n${url}`).then(() => {
-                        alert('Link copied to clipboard!');
-                    });
-                }
+        // Delete a track
+        function deleteTrack(trackId) {
+            const trackIndex = tracks.findIndex(t => t.id === trackId);
+            if (trackIndex === -1) return;
+            
+            // If deleting currently playing track, stop it
+            if (currentTrackIndex >= 0 && tracks[currentTrackIndex].id === trackId) {
+                stopPlayer();
+                currentTrackIndex = -1;
+            }
+            
+            // Remove track
+            tracks.splice(trackIndex, 1);
+            
+            // Save to storage
+            saveMusicToStorage();
+            
+            // Update UI
+            renderMusicLibrary();
+            updateStatistics();
+            updateNoMusicMessage();
+        }
+        
+        // Update no music message
+        function updateNoMusicMessage() {
+            if (tracks.length === 0) {
+                noMusicMessage.style.display = 'block';
+                musicGrid.innerHTML = '';
+            } else {
+                noMusicMessage.style.display = 'none';
             }
         }
         
@@ -1397,11 +1472,12 @@
                 return;
             }
             
-            const filtered = musicLibrary.filter(track =>
+            const filtered = tracks.filter(track =>
                 track.title.toLowerCase().includes(query) ||
                 track.artist.toLowerCase().includes(query) ||
                 track.album.toLowerCase().includes(query) ||
-                track.genre.toLowerCase().includes(query)
+                track.genre.toLowerCase().includes(query) ||
+                (track.description && track.description.toLowerCase().includes(query))
             );
             
             renderMusicLibrary(filtered);
@@ -1410,23 +1486,23 @@
         // Update statistics
         function updateStatistics() {
             // Calculate totals
-            const totalTracks = musicLibrary.length;
-            const totalStorage = musicLibrary.reduce((sum, track) => {
-                return sum + parseFloat(track.size);
+            const totalTracks = tracks.length;
+            const totalStorage = tracks.reduce((sum, track) => {
+                return sum + (track.fileSize || 0);
             }, 0);
-            const totalPlays = musicLibrary.reduce((sum, track) => {
-                return sum + track.plays;
+            const totalPlays = tracks.reduce((sum, track) => {
+                return sum + (track.plays || 0);
             }, 0);
             
             // Get today's date
             const today = new Date().toISOString().split('T')[0];
-            const uploadsToday = musicLibrary.filter(track => 
+            const uploadsToday = tracks.filter(track => 
                 track.uploadDate === today
             ).length;
             
             // Update DOM
             totalTracksEl.textContent = totalTracks;
-            storageUsedEl.textContent = totalStorage.toFixed(1) + ' MB';
+            storageUsedEl.textContent = formatFileSize(totalStorage);
             totalPlaysEl.textContent = totalPlays;
             uploadsTodayEl.textContent = uploadsToday;
         }
@@ -1438,15 +1514,106 @@
             });
         }
         
+        // Backup functions
+        function backupMusic() {
+            document.getElementById('backupModal').style.display = 'flex';
+        }
+        
+        function closeBackupModal() {
+            document.getElementById('backupModal').style.display = 'none';
+        }
+        
+        function downloadBackup() {
+            const backupData = {
+                version: '1.0',
+                date: new Date().toISOString(),
+                tracks: tracks
+            };
+            
+            const dataStr = JSON.stringify(backupData, null, 2);
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+            
+            const exportFileDefaultName = `taylee-music-backup-${new Date().toISOString().split('T')[0]}.json`;
+            
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+            
+            closeBackupModal();
+        }
+        
+        function restoreMusic() {
+            document.getElementById('restoreModal').style.display = 'flex';
+        }
+        
+        function closeRestoreModal() {
+            document.getElementById('restoreModal').style.display = 'none';
+        }
+        
+        function restoreFromBackup() {
+            const fileInput = document.getElementById('backupFile');
+            if (!fileInput.files.length) {
+                alert('Please select a backup file.');
+                return;
+            }
+            
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                try {
+                    const backupData = JSON.parse(e.target.result);
+                    
+                    if (!backupData.tracks || !Array.isArray(backupData.tracks)) {
+                        throw new Error('Invalid backup file format');
+                    }
+                    
+                    if (confirm(`Restore ${backupData.tracks.length} tracks? This will replace your current library.`)) {
+                        tracks = backupData.tracks;
+                        saveMusicToStorage();
+                        renderMusicLibrary();
+                        updateStatistics();
+                        updateNoMusicMessage();
+                        alert('Music library restored successfully!');
+                        closeRestoreModal();
+                    }
+                } catch (error) {
+                    alert('Error restoring backup: ' + error.message);
+                }
+            };
+            
+            reader.onerror = function() {
+                alert('Error reading backup file.');
+            };
+            
+            reader.readAsText(file);
+        }
+        
+        function clearAllMusic() {
+            if (confirm('Delete ALL your music? This cannot be undone!')) {
+                tracks = [];
+                saveMusicToStorage();
+                stopPlayer();
+                renderMusicLibrary();
+                updateStatistics();
+                updateNoMusicMessage();
+                alert('All music cleared.');
+            }
+        }
+        
         // Initialize the app when page loads
         document.addEventListener('DOMContentLoaded', initApp);
         
         // Close modal if clicked outside
         window.onclick = function(event) {
-            const modal = document.getElementById('successModal');
-            if (event.target === modal) {
-                closeModal();
-            }
+            const modals = ['successModal', 'backupModal', 'restoreModal'];
+            modals.forEach(modalId => {
+                const modal = document.getElementById(modalId);
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
         }
     </script>
 </body>
